@@ -15,6 +15,7 @@
 		AB0EA59922F7A27F0090BB7B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB0EA59722F7A27F0090BB7B /* LaunchScreen.storyboard */; };
 		AB0EA5A122F7A57C0090BB7B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0EA5A022F7A57C0090BB7B /* Extensions.swift */; };
 		AB0EA5A322F7A9320090BB7B /* WeatherNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0EA5A222F7A9320090BB7B /* WeatherNetwork.swift */; };
+		AB0EA5A522F7BC120090BB7B /* MoodTrackerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0EA5A422F7BC120090BB7B /* MoodTrackerVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		AB0EA59A22F7A27F0090BB7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB0EA5A022F7A57C0090BB7B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = /Users/jonathan/Documents/MakeSchool/WeatherMood/WeatherMood/WeatherMood/Extensions.swift; sourceTree = "<absolute>"; };
 		AB0EA5A222F7A9320090BB7B /* WeatherNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherNetwork.swift; sourceTree = "<group>"; };
+		AB0EA5A422F7BC120090BB7B /* MoodTrackerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodTrackerVC.swift; sourceTree = "<group>"; };
 		D26A515B73CCC43DC3517631 /* Pods-WeatherMood.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherMood.release.xcconfig"; path = "Target Support Files/Pods-WeatherMood/Pods-WeatherMood.release.xcconfig"; sourceTree = "<group>"; };
 		E77815232EEE49BC32E4838A /* Pods-WeatherMood.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherMood.debug.xcconfig"; path = "Target Support Files/Pods-WeatherMood/Pods-WeatherMood.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -82,6 +84,7 @@
 				AB0EA59722F7A27F0090BB7B /* LaunchScreen.storyboard */,
 				AB0EA59A22F7A27F0090BB7B /* Info.plist */,
 				AB0EA5A222F7A9320090BB7B /* WeatherNetwork.swift */,
+				AB0EA5A422F7BC120090BB7B /* MoodTrackerVC.swift */,
 			);
 			path = WeatherMood;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				AB0EA5A322F7A9320090BB7B /* WeatherNetwork.swift in Sources */,
 				AB0EA5A122F7A57C0090BB7B /* Extensions.swift in Sources */,
 				AB0EA58F22F7A27E0090BB7B /* AppDelegate.swift in Sources */,
+				AB0EA5A522F7BC120090BB7B /* MoodTrackerVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -29,6 +29,7 @@ class ViewController: UIViewController {
     var backgroundImage = UIImageView()
     var admin = false
     var weatherNetwork = WeatherNetwork()
+    var currWeather: City?
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -124,6 +125,7 @@ class ViewController: UIViewController {
         if let weather = weatherNetwork.city{
             print(weather)
             drawWeather(weather: weather)
+            currWeather = weather
         }
     }
     
@@ -131,15 +133,29 @@ class ViewController: UIViewController {
     {
 
         let icon = UIImageView()
-        icon.frame = CGRect(x: self.view.bounds.width / 2 - 25, y: 50, width: 75, height: 75)
+        icon.frame = CGRect(x: self.view.bounds.width / 2 - 37.5, y: 50, width: 75, height: 75)
         
-        if(weather.weather[0].main == "Clouds")
+        if(weather.weather[0].main == "Clear")
         {
-            icon.image = #imageLiteral(resourceName: "icons8-partly-cloudy-day-100")
-        }else{
             icon.image = #imageLiteral(resourceName: "icons8-sun-64")
+        }else{
+            icon.image = #imageLiteral(resourceName: "icons8-partly-cloudy-day-100")
         }
         self.view.addSubview(icon)
+        let labe = UILabel()
+        
+        labe.backgroundColor = .clear
+        labe.frame = CGRect(x: 0, y: icon.frame.maxY + 5, width: self.view.bounds.width, height: 20)
+        labe.textAlignment = .center
+        labe.font = UIFont(name: "Arial-BoldMT", size: 20)
+        labe.numberOfLines = 1
+        labe.adjustsFontSizeToFitWidth = true
+        labe.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        let degrees = Int(weather.main.temp)
+        labe.text = "\(degrees)\u{2109} with \(weather.weather[0].description)."
+        labe.shadowColor = .black
+        labe.shadowOffset = CGSize(width: -2, height: 2)
+        self.view.addSubview(labe)
     }
     
     @objc func sliderValueDidChange(_ sender: UISlider!)
@@ -227,13 +243,21 @@ class ViewController: UIViewController {
     
     @objc func moodTrackerPressed()
     {
-//        let vc = moodTracker()
-//        let animation = CATransition()
-//        animation.type = .push
-//        animation.subtype = .fromBottom
-//        animation.duration = 0.6
-//        self.view.window!.layer.add(animation, forKey: nil)
-//        self.present(vc, animated: false, completion: nil)
+        if let weather = currWeather{
+            var type = "1"//Cloudy
+            if weather.weather[0].main == "Clear"
+            {
+                type = "2"//Sunny
+            }
+            let vc = MoodTrackerVC()
+            let animation = CATransition()
+            vc.type = type
+            animation.type = .fade
+            animation.subtype = .fromTop
+            animation.duration = 0.6
+            self.view.window!.layer.add(animation, forKey: nil)
+            self.present(vc, animated: false, completion: nil)
+        }
     }
     
     func scheduledTimerWithTimeInterval(){
@@ -269,12 +293,18 @@ class ViewController: UIViewController {
     
     @objc func moodPressed(_ sender: UIButton)
     {
-        let moodStrings = ["Happy","Bored","Frustrated","Angry","Lonely","Stressed","Anxious","Sad","Depressed"]
+        if let weather = currWeather{
+        var type = "1"//Cloudy
+        if weather.weather[0].main == "Clear"
+        {
+            type = "2"//Sunny
+        }
+        let moodStrings = ["Happy\(type)","Bored\(type)","Frustrated\(type)","Angry\(type)","Lonely\(type)","Stressed\(type)","Anxious\(type)","Sad\(type)","Depressed\(type)"]
         let userDefaults = Foundation.UserDefaults.standard
         var ctr = 0
         while(ctr < moodStrings.count)
         {
-            if(currentMood == moodStrings[ctr])
+            if("\(currentMood)\(type)" == moodStrings[ctr])
             {
                 //print(moodStrings[ctr])
                 let moodDict = (userDefaults.dictionary(forKey: moodStrings[ctr]) ?? [String : Int]())
@@ -285,7 +315,6 @@ class ViewController: UIViewController {
                 }else{
                     for (_,value) in moodDict
                     {
-                        //print(value)
                         let newValue = value as? Int
                         let newDict = [moodStrings[ctr] : newValue! + 1] as [String : Any]
                         userDefaults.set(newDict, forKey: moodStrings[ctr])
@@ -295,17 +324,16 @@ class ViewController: UIViewController {
             }
             ctr += 1
         }
-//        let vc = MoodVC()
-//        vc.mood = currentMood
-//        vc.color = getColorSet(i: currentMood)
-//        let animation = CATransition()
-//        animation.type = .fade
-//        animation.subtype = .fromTop
-//        animation.duration = 0.6
-//        self.view.window!.layer.add(animation, forKey: nil)
-//        self.present(vc, animated: false, completion: nil)
+        let vc = MoodTrackerVC()
+        let animation = CATransition()
+        vc.type = type
+        animation.type = .fade
+        animation.subtype = .fromTop
+        animation.duration = 0.6
+        self.view.window!.layer.add(animation, forKey: nil)
+        self.present(vc, animated: false, completion: nil)
         
-        
+        }
     }
     
     //i = theMood to look for
