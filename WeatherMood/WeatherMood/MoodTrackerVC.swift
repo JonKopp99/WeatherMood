@@ -19,7 +19,7 @@ class MoodTrackerVC: UIViewController{
     var greetingLabel = UILabel()
     var resetTrakerButton = UIButton()
     var resetView = UIView()
-    var type = "2"
+    var type = String()
     var b1 = UIButton()
     var b2 = UIButton()
     override func viewDidLoad() {
@@ -36,7 +36,13 @@ class MoodTrackerVC: UIViewController{
         greetingLabel.font = UIFont(name: "AvenirNext-DemiBold", size: 30)
         greetingLabel.adjustsFontSizeToFitWidth = true
         greetingLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        greetingLabel.text = "Mood Tracker"
+        
+        if(type == "1")
+        {
+             greetingLabel.text = "Overcast Moods"
+        }else{
+            greetingLabel.text = "Sunny Moods"
+        }
         greetingLabel.shadowColor = .black
         greetingLabel.shadowOffset = CGSize(width: -2, height: 2)
         self.view.addSubview(greetingLabel)
@@ -51,7 +57,7 @@ class MoodTrackerVC: UIViewController{
         
         let backButton = UIButton()
         backButton.frame = CGRect(x: 5, y: greetingLabel.frame.minY + 12.5, width: 25, height: 25)
-        backButton.setImage(#imageLiteral(resourceName: "icons8-partly-cloudy-day-100"), for: .normal)
+        backButton.setImage(#imageLiteral(resourceName: "icons8-chevron-left-50").mask(with: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)), for: .normal)
         backButton.alpha = 1.0
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         self.view.addSubview(backButton)
@@ -71,10 +77,10 @@ class MoodTrackerVC: UIViewController{
         {
             self.view.addSubview(resetTrakerButton)
         }
-        let b1 = UIButton()//Sunny Button
+        //Overcast Button
         b1.frame = CGRect(x: 0, y: greetingLabel.frame.maxY + 5, width: view.bounds.width / 2, height: 40.0)
         b1.titleLabel!.font = UIFont(name: "AvenirNext-DemiBold", size: 25)
-        b1.setTitle("Sunny", for: .normal)
+        b1.setTitle("Overcast", for: .normal)
         b1.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
         b1.titleLabel?.adjustsFontSizeToFitWidth = true
         b1.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
@@ -84,10 +90,10 @@ class MoodTrackerVC: UIViewController{
         b1.addTarget(self, action:#selector(self.b1Pressed), for: .touchUpInside)
         view.addSubview(b1)
         
-        let b2 = UIButton()//Overcast Button
+        //Sunny Button
         b2.frame = CGRect(x: view.bounds.width / 2, y: greetingLabel.frame.maxY + 5, width: view.bounds.width / 2, height: 40.0)
         b2.titleLabel!.font = UIFont(name: "AvenirNext-DemiBold", size: 25)
-        b2.setTitle("Overcast", for: .normal)
+        b2.setTitle("Sunny", for: .normal)
         b2.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
         b2.titleLabel?.adjustsFontSizeToFitWidth = true
         b2.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
@@ -105,23 +111,36 @@ class MoodTrackerVC: UIViewController{
     
     @objc func b1Pressed()//Sunny Button Pressed
     {
-        resetTheView(theType: "2")
-        b1.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
-        b2.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.2)
+        if(type != "1"){
+            resetTheView(theType: "1")
+            b2.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
+            b1.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.2)}
     }
     @objc func b2Pressed()//Overcast Button Pressed
     {
-        resetTheView(theType: "1")
-        b1.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.2)
-        b2.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
+        if(type != "2"){
+        resetTheView(theType: "2")
+        b2.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.2)
+        b1.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
+        
+        }
     }
     func resetTheView(theType: String)
     {
         type = theType
         pieChart.removeFromSuperview()
-        moods.moodValues?.removeAll()
+        moods = moodChart()
+        moodValues = [Int]()
         getTheMoodValues()
         setUpPieChart()
+        if(type == "1")
+        {
+            greetingLabel.text = "Overcast Moods"
+        }else{
+            greetingLabel.text = "Sunny Moods"
+        }
+        view.bringSubviewToFront(b1)
+        view.bringSubviewToFront(b2)
     }
     @objc func resetPressed()
     {
