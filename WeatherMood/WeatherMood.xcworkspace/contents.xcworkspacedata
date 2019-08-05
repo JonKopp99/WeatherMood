@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/jonathan/Documents/MakeSchool/WeatherMood/WeatherMood/WeatherMood/Extensions.swift">
+   </FileRef>
+   <FileRef
       location = "group:WeatherMood.xcodeproj">
    </FileRef>
    <FileRef
