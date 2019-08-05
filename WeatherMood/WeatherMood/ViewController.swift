@@ -15,11 +15,8 @@ class ViewController: UIViewController {
     var greetinglabelView = UIView()
     var feelinglabelView = UIView()
     var feelingLabel = UILabel()
-    var byAmount = CGFloat()
-    var menuStatus = Bool()
     var menuView = UIView()
     var menuHeight = CGFloat()
-    var swipeAlpha = 0.0
     var timer = Timer()
     var swipeButton = UIButton()
     var upDownAlpha = Bool()
@@ -27,12 +24,12 @@ class ViewController: UIViewController {
     var currentMood = String()
     var b = UIButton()//Ready button!
     var backgroundImage = UIImageView()
-    var admin = false
     var weatherNetwork = WeatherNetwork()
     var currWeather: City?
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Set up greeting labels, Button and UISlider
         view.backgroundColor = #colorLiteral(red: 0.4196078431, green: 0.3764705882, blue: 1, alpha: 1)
         backgroundImage.image = #imageLiteral(resourceName: "DSC100373704")
         backgroundImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
@@ -99,28 +96,25 @@ class ViewController: UIViewController {
         self.feelinglabelView.addSubview(slider)
         self.feelinglabelView.addSubview(feelingLabel)
         self.view.addSubview(feelinglabelView)
-        menuStatus = true
-        let swipeUp = UISwipeGestureRecognizer(target: self, action:#selector(self.swipeUp(_:)))
-        swipeUp.direction = UISwipeGestureRecognizer.Direction.up
-        self.view.addGestureRecognizer(swipeUp)
-        
-        let swipeDown = UISwipeGestureRecognizer(target: self, action:#selector(self.swipeDown(_:)))
-        swipeDown.direction = UISwipeGestureRecognizer.Direction.down
-        self.view.addGestureRecognizer(swipeDown)
         
         menuHeight = 65//self.view.bounds.height * 0.1
         menuView.frame = CGRect(x: 0, y: self.view.bounds.height - menuHeight, width: self.view.bounds.width, height: menuHeight)
         menuView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).withAlphaComponent(0.5)
         //menuView.layer.cornerRadius = 10
         self.view.addSubview(menuView)
+        //Animate the menu
         menuView.alpha = 1.0
         setUpMenu()
         moveLabels()
         
+        //Start the network task.
         weatherNetwork.getWeather()
+        //Subscribe to the notification once data has been fetched
         NotificationCenter.default.addObserver(self, selector: #selector(fetchedWeather), name: NSNotification.Name(rawValue: "fetchedCity"), object: nil)
     }
     
+    //Activates once the weather gets fetched.
+    //Starts to draw icons based on the weather
     @objc func fetchedWeather(){
         if let weather = weatherNetwork.city{
             print(weather)
@@ -129,6 +123,7 @@ class ViewController: UIViewController {
         }
     }
     
+    //Draws the weather topbar
     func drawWeather(weather: City)
     {
 
@@ -158,10 +153,10 @@ class ViewController: UIViewController {
         self.view.addSubview(labe)
     }
     
+    //Set-up the UISlider with its values
     @objc func sliderValueDidChange(_ sender: UISlider!)
     {
         let theValue = (sender.value)
-        // ["Lonely","Sad","Angry","Happy","Frustrated","Bored"]["Lonely","Sad","Angry","Happy","Frustrated","Bored", "Tired"]
         if(theValue < 1)
         {
             slider.setThumbImage(#imageLiteral(resourceName: "Emoji_Icon_-_Happy_70x70").resizeImage(targetSize: CGSize(width: 50, height: 50)), for: .normal)
@@ -212,6 +207,7 @@ class ViewController: UIViewController {
         
     }
     
+    //Animate the greeting labels
     func moveLabels()
     {
         UIView.animate(withDuration: 1.0, animations: {
@@ -222,12 +218,11 @@ class ViewController: UIViewController {
                 self.feelinglabelView.alpha = 1
                 self.feelinglabelView.frame = CGRect(x: 0, y: self.view.bounds.height / 4 + 60, width: self.view.bounds.width, height: 200)
                 
-            }, completion: { (finished: Bool) in
-                //Do Nothing
             })
         })
     }
     
+    //Sets up the menu subview and adds it to superview.
     func setUpMenu()
     {
         let startX = self.menuView.bounds.width / 2 - 25
@@ -241,6 +236,8 @@ class ViewController: UIViewController {
 
     }
     
+    //Goes to the visual graph of moods
+        //Type controls what the current weather is like.
     @objc func moodTrackerPressed()
     {
         if let weather = currWeather{
@@ -260,37 +257,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func scheduledTimerWithTimeInterval(){
-        if(menuStatus == false)
-        {
-            timer = Timer.scheduledTimer(withTimeInterval: 0.015, repeats: true, block: {_ in self.changeAlpha()})
-        }
-    }
-    
-    func changeAlpha()
-    {
-        if(swipeAlpha >= 1.0)
-        {
-            upDownAlpha = true
-        }
-        if(swipeAlpha <= 0.0)
-        {
-            upDownAlpha = false
-        }
-        if(upDownAlpha)
-        {
-            swipeAlpha -= 0.01
-        }else{
-            swipeAlpha += 0.01
-        }
-        if(menuStatus == false)
-        {
-            swipeButton.alpha = CGFloat(swipeAlpha)
-        }else{
-            swipeButton.alpha = 0.0
-        }
-    }
-    
+    //Adds the mood to the userDefaults and then presents the mood graphs.
     @objc func moodPressed(_ sender: UIButton)
     {
         if let weather = currWeather{
@@ -334,77 +301,6 @@ class ViewController: UIViewController {
         self.present(vc, animated: false, completion: nil)
         
         }
-    }
-    
-    //i = theMood to look for
-    func getColorSet(i: String) -> UIColor
-    {
-        //["Happy","Bored","Frustrated","Angry","Lonely","Stressed","Anxious","Sad","Depressed"]
-        let colors = [#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1),#colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1),#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1),#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1),#colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1),#colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1),#colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1),#colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)]
-        if(i == "Happy")
-        {
-            return colors[0]
-        }else if(i == "Bored")
-        {
-            return colors[1]
-        }else if(i == "Frustrated")
-        {
-            return colors[2]
-        }else if(i == "Angry")
-        {
-            return colors[3]
-        }else if(i == "Lonely")
-        {
-            return colors[4]
-        }else if(i == "Stressed")
-        {
-            return colors[5]
-        }else if(i == "Anxious")
-        {
-            return colors[6]
-        }else if(i == "Sad")
-        {
-            return colors[7]
-        }else if(i == "Depressed")
-        {
-            return colors[8]
-        }
-        return colors[0]
-    }
-    
-    
-    @objc func swipeUp(_ sender: UISwipeGestureRecognizer){
-        if(menuStatus == false)
-        {
-            byAmount = menuView.frame.height
-            UIView.animate(withDuration: 0.7, animations: {
-                //self.greetinglabelView.slideYUp(offSet: self.byAmount)
-                //self.feelinglabelView.slideYUp(offSet: self.byAmount)
-                self.menuView.frame = CGRect(x: 0, y: self.view.bounds.height - self.menuHeight, width: self.view.bounds.width, height: self.menuHeight)
-                self.menuView.alpha = 1.0
-            })
-            menuStatus = true
-            
-        }
-    }
-    @objc func swipeDown(_ sender: UISwipeGestureRecognizer){
-        
-        if(menuStatus)
-        {
-            byAmount = -byAmount
-            UIView.animate(withDuration: 0.7, animations: {
-                // self.greetinglabelView.slideYUp(offSet: self.byAmount)
-                //self.feelinglabelView.slideYUp(offSet: self.byAmount)
-                self.menuView.frame = CGRect(x: 0, y: self.view.bounds.height, width: self.view.bounds.width, height: self.menuHeight)
-                self.menuView.alpha = 0.0
-            }, completion: { (finished: Bool) in
-                self.menuStatus = false
-            })
-            
-            
-        }
-    }
-    override func viewWillDisappear(_ animated: Bool) {
     }
 }
 

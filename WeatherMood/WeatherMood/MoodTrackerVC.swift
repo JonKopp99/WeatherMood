@@ -19,12 +19,13 @@ class MoodTrackerVC: UIViewController{
     var greetingLabel = UILabel()
     var resetTrakerButton = UIButton()
     var resetView = UIView()
-    var type = String()
-    var b1 = UIButton()
-    var b2 = UIButton()
+    var type = String()//Either 1 = Overcast 2 = Sunny
+    var b1 = UIButton()//Overcast Button
+    var b2 = UIButton()//Sunny Button
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Set up top view
         backgroundImage.image = #imageLiteral(resourceName: "DSC100373704")
         backgroundImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
         backgroundImage.contentMode = .scaleAspectFill
@@ -47,13 +48,13 @@ class MoodTrackerVC: UIViewController{
         greetingLabel.shadowOffset = CGSize(width: -2, height: 2)
         self.view.addSubview(greetingLabel)
         
+        //Swipe gesture to dismiss
         let swipeRight = UISwipeGestureRecognizer(target: self, action:#selector(self.swipeRight(_:)))
         swipeRight.direction = UISwipeGestureRecognizer.Direction.right
         self.view.addGestureRecognizer(swipeRight)
+        //Start to fill the PieChart
         getTheMoodValues()
-        //moodValues = [1,2,3,4,5,6]
         setUpPieChart()
-        //pieChart.update
         
         let backButton = UIButton()
         backButton.frame = CGRect(x: 5, y: greetingLabel.frame.minY + 12.5, width: 25, height: 25)
@@ -62,6 +63,7 @@ class MoodTrackerVC: UIViewController{
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         self.view.addSubview(backButton)
         
+        //Reset button which will trigger the reset of the graph
         resetTrakerButton.frame = CGRect(x: self.view.bounds.width / 2  - 100, y: pieChart.frame.maxY + 20, width: 200, height: 40.0)
         resetTrakerButton.titleLabel!.font = UIFont(name: "AvenirNext-DemiBold", size: 25)
         resetTrakerButton.setTitle("Reset", for: .normal)
@@ -109,14 +111,14 @@ class MoodTrackerVC: UIViewController{
         }
     }
     
-    @objc func b1Pressed()//Sunny Button Pressed
+    @objc func b1Pressed()//Overcast Button Pressed
     {
         if(type != "1"){
             resetTheView(theType: "1")
             b2.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
             b1.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.2)}
     }
-    @objc func b2Pressed()//Overcast Button Pressed
+    @objc func b2Pressed()//Sunny Button Pressed
     {
         if(type != "2"){
         resetTheView(theType: "2")
@@ -125,6 +127,7 @@ class MoodTrackerVC: UIViewController{
         
         }
     }
+    //When b1 or b2 gets activated
     func resetTheView(theType: String)
     {
         type = theType
@@ -142,9 +145,10 @@ class MoodTrackerVC: UIViewController{
         view.bringSubviewToFront(b1)
         view.bringSubviewToFront(b2)
     }
+    //Triggers the reset view
     @objc func resetPressed()
     {
-        resetView.frame = CGRect(x: 0, y: 100, width: self.view.bounds.width, height: 100)
+        resetView.frame = CGRect(x: 0, y: b1.frame.maxY, width: self.view.bounds.width, height: 100)
         resetView.backgroundColor = .clear
         let label = UILabel(frame: CGRect(x: 10, y: 0, width: self.view.bounds.width - 20, height: 60))
         label.numberOfLines = 2
@@ -188,11 +192,9 @@ class MoodTrackerVC: UIViewController{
             self.resetTrakerButton.alpha = 0.0
             self.resetView.alpha = 1.0
         })
-        //print("Reset Pressed")
-        
-        
     }
     
+    //When user agree's to reset
     @objc func yesReset()
     {
         
@@ -213,6 +215,7 @@ class MoodTrackerVC: UIViewController{
         noDataView()
     }
     
+    //Remove reset view
     @objc func noReset()
     {
         
@@ -220,7 +223,7 @@ class MoodTrackerVC: UIViewController{
         resetView = UIView()
         moveBack()
     }
-    
+    //Move the Piechart
     func moveBack()
     {
         UIView.animate(withDuration: 0.5, animations: {
@@ -229,6 +232,7 @@ class MoodTrackerVC: UIViewController{
         })
     }
     
+    //Dissmiss vc
     @objc func backButtonPressed()
     {
         let animation = CATransition()
@@ -240,6 +244,7 @@ class MoodTrackerVC: UIViewController{
         self.dismiss(animated: false, completion: nil)
     }
     
+    //Sets up the piechart with the mood values.
     func setUpPieChart()
     {
         if(theMoods.count > 0)
@@ -301,6 +306,7 @@ class MoodTrackerVC: UIViewController{
         }
     }
     
+    //If there are no values in the data set show that theyre are none
     func noDataView()
     {
         let label = UILabel(frame: CGRect(x: 10, y: greetingLabel.frame.maxY + 20, width: self.view.bounds.width - 20, height: 100))
@@ -314,6 +320,7 @@ class MoodTrackerVC: UIViewController{
         self.view.addSubview(label)
     }
     
+    //Each mood has its own color set.
     func getColorSet() -> [UIColor]
     {
         let colors = [#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1),#colorLiteral(red: 0.5741485357, green: 0.5741624236, blue: 0.574154973, alpha: 1),#colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1),#colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1),#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1),#colorLiteral(red: 0.4513868093, green: 0.9930960536, blue: 1, alpha: 1),#colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1),#colorLiteral(red: 0, green: 0.3285208941, blue: 0.5748849511, alpha: 1),#colorLiteral(red: 0.004859850742, green: 0.09608627111, blue: 0.5749928951, alpha: 1)]
@@ -353,6 +360,7 @@ class MoodTrackerVC: UIViewController{
         return theColors
     }
     
+    //Fetches the mood values from the user defaults
     func getTheMoodValues()
     {
         print(type)
@@ -378,6 +386,7 @@ class MoodTrackerVC: UIViewController{
         }
     }
     
+    //Dismiss VC
     @objc func swipeRight(_ sender: UISwipeGestureRecognizer){
         let location = (sender.location(in: pieChart))
         if(location.y >= pieChart.frame.maxY - 100)
@@ -394,7 +403,6 @@ class MoodTrackerVC: UIViewController{
 }
 
 struct moodChart{
-    //["Lonely","Sad","Angry","Happy","Frustrated","Bored"]
     var moodValues: [Int]?
     
 }
