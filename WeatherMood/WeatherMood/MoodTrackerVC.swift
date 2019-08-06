@@ -20,8 +20,8 @@ class MoodTrackerVC: UIViewController{
     var resetTrakerButton = UIButton()
     var resetView = UIView()
     var type = String()//Either 1 = Overcast 2 = Sunny
-    var b1 = UIButton()//Overcast Button
-    var b2 = UIButton()//Sunny Button
+    var overcastButton = UIButton()//Overcast Button
+    var sunnyButton = UIButton()//Sunny Button
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -80,54 +80,54 @@ class MoodTrackerVC: UIViewController{
             self.view.addSubview(resetTrakerButton)
         }
         //Overcast Button
-        b1.frame = CGRect(x: 0, y: greetingLabel.frame.maxY + 5, width: view.bounds.width / 2, height: 40.0)
-        b1.titleLabel!.font = UIFont(name: "AvenirNext-DemiBold", size: 25)
-        b1.setTitle("Overcast", for: .normal)
-        b1.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
-        b1.titleLabel?.adjustsFontSizeToFitWidth = true
-        b1.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
-        b1.layer.cornerRadius = 20
-        b1.layer.borderWidth = 2
-        b1.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        b1.addTarget(self, action:#selector(self.b1Pressed), for: .touchUpInside)
-        view.addSubview(b1)
+        overcastButton.frame = CGRect(x: 0, y: greetingLabel.frame.maxY + 5, width: view.bounds.width / 2, height: 40.0)
+        overcastButton.titleLabel!.font = UIFont(name: "AvenirNext-DemiBold", size: 25)
+        overcastButton.setTitle("Overcast", for: .normal)
+        overcastButton.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
+        overcastButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        overcastButton.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
+        overcastButton.layer.cornerRadius = 20
+        overcastButton.layer.borderWidth = 2
+        overcastButton.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        overcastButton.addTarget(self, action:#selector(self.overcastButtonPressed), for: .touchUpInside)
+        view.addSubview(overcastButton)
         
         //Sunny Button
-        b2.frame = CGRect(x: view.bounds.width / 2, y: greetingLabel.frame.maxY + 5, width: view.bounds.width / 2, height: 40.0)
-        b2.titleLabel!.font = UIFont(name: "AvenirNext-DemiBold", size: 25)
-        b2.setTitle("Sunny", for: .normal)
-        b2.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
-        b2.titleLabel?.adjustsFontSizeToFitWidth = true
-        b2.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
-        b2.layer.cornerRadius = 20
-        b2.layer.borderWidth = 2
-        b2.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        b2.addTarget(self, action:#selector(self.b2Pressed), for: .touchUpInside)
-        view.addSubview(b2)
+        sunnyButton.frame = CGRect(x: view.bounds.width / 2, y: greetingLabel.frame.maxY + 5, width: view.bounds.width / 2, height: 40.0)
+        sunnyButton.titleLabel!.font = UIFont(name: "AvenirNext-DemiBold", size: 25)
+        sunnyButton.setTitle("Sunny", for: .normal)
+        sunnyButton.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
+        sunnyButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        sunnyButton.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
+        sunnyButton.layer.cornerRadius = 20
+        sunnyButton.layer.borderWidth = 2
+        sunnyButton.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        sunnyButton.addTarget(self, action:#selector(self.sunnyButtonPressed), for: .touchUpInside)
+        view.addSubview(sunnyButton)
         if type == "1"{
-            b1.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.2)
+            overcastButton.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.2)
         }else{
-            b2.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.2)
+            sunnyButton.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.2)
         }
     }
     
-    @objc func b1Pressed()//Overcast Button Pressed
+    @objc func overcastButtonPressed()//Overcast Button Pressed
     {
         if(type != "1"){
             resetTheView(theType: "1")
-            b2.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
-            b1.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.2)}
+            sunnyButton.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
+            overcastButton.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.2)}
     }
-    @objc func b2Pressed()//Sunny Button Pressed
+    @objc func sunnyButtonPressed()//Sunny Button Pressed
     {
         if(type != "2"){
         resetTheView(theType: "2")
-        b2.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.2)
-        b1.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
+        sunnyButton.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.2)
+        overcastButton.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
         
         }
     }
-    //When b1 or b2 gets activated
+    //When overcastButton or sunnyButton gets activated
     func resetTheView(theType: String)
     {
         type = theType
@@ -142,13 +142,13 @@ class MoodTrackerVC: UIViewController{
         }else{
             greetingLabel.text = "Sunny Moods"
         }
-        view.bringSubviewToFront(b1)
-        view.bringSubviewToFront(b2)
+        view.bringSubviewToFront(overcastButton)
+        view.bringSubviewToFront(sunnyButton)
     }
     //Triggers the reset view
     @objc func resetPressed()
     {
-        resetView.frame = CGRect(x: 0, y: b1.frame.maxY, width: self.view.bounds.width, height: 100)
+        resetView.frame = CGRect(x: 0, y: overcastButton.frame.maxY, width: self.view.bounds.width, height: 100)
         resetView.backgroundColor = .clear
         let label = UILabel(frame: CGRect(x: 10, y: 0, width: self.view.bounds.width - 20, height: 60))
         label.numberOfLines = 2
@@ -172,18 +172,18 @@ class MoodTrackerVC: UIViewController{
         b.addTarget(self, action:#selector(self.yesReset), for: .touchUpInside)
         self.resetView.addSubview(b)
         
-        let b2 = UIButton()
-        b2.frame = CGRect(x: self.view.bounds.width / 2 + 2.5, y: label.frame.maxY, width: 150, height: 40.0)
-        b2.titleLabel!.font = UIFont(name: "AvenirNext-DemiBold", size: 25)
-        b2.setTitle("Cancel", for: .normal)
-        b2.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
-        b2.titleLabel?.adjustsFontSizeToFitWidth = true
-        b2.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
-        b2.layer.cornerRadius = 20
-        b2.layer.borderWidth = 2
-        b2.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        b2.addTarget(self, action:#selector(self.noReset), for: .touchUpInside)
-        self.resetView.addSubview(b2)
+        let sunnyButton = UIButton()
+        sunnyButton.frame = CGRect(x: self.view.bounds.width / 2 + 2.5, y: label.frame.maxY, width: 150, height: 40.0)
+        sunnyButton.titleLabel!.font = UIFont(name: "AvenirNext-DemiBold", size: 25)
+        sunnyButton.setTitle("Cancel", for: .normal)
+        sunnyButton.setTitleColor(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0), for: .normal)
+        sunnyButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        sunnyButton.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).withAlphaComponent(0.2)
+        sunnyButton.layer.cornerRadius = 20
+        sunnyButton.layer.borderWidth = 2
+        sunnyButton.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        sunnyButton.addTarget(self, action:#selector(self.noReset), for: .touchUpInside)
+        self.resetView.addSubview(sunnyButton)
         self.view.addSubview(resetView)
         resetView.alpha = 0.0
         
